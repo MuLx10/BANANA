@@ -2,11 +2,12 @@ import numpy as np
 import random
 from collections import namedtuple, deque
 
-from model import AgentNetwork
-
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 class ReplayBuffer:
     """Fixed-size buffer to store experience tuples."""
