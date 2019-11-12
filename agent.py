@@ -37,7 +37,7 @@ class Agent():
         ## TODO: Initialize your action network here
         "*** YOUR CODE HERE ***"
         self.network = AgentNetwork(state_size, action_size, seed).to(device)
-        self.optimizer = optim.Adam(self.network.parameters(), lr=self.learn_rate)
+        self.optimizer = optim.Adam(self.network.parameters(), lr=LR)
         self.network.train()
 
         # Replay memory
@@ -98,24 +98,24 @@ class Agent():
         """
         states, actions, rewards, next_states, dones = experiences
         
-        rewards = self.discount_rewards(discount_rewards);
+        rewards = self.discount_rewards(rewards);
 
         ## TODO: compute and minimize the loss using REINFORCE
         "*** YOUR CODE HERE ***"
-        optimizer.zero_grad()
+        self.optimizer.zero_grad()
         state_tensor = torch.FloatTensor(states)
         reward_tensor = torch.FloatTensor(rewards)
         action_tensor = torch.LongTensor(actions)
         
         # Calculate loss
-        logprob = torch.log(network.predict(state_tensor))
+        logprob = torch.log(self.network.forward(state_tensor))
         selected_logprobs = reward_tensor * logprob[np.arange(len(action_tensor)), action_tensor]
         loss = -selected_logprobs.mean()
         
         # Calculate gradients
         loss.backward()
         # Apply gradients
-        optimizer.step()
+        self.optimizer.step()
         
         
                              

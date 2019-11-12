@@ -13,16 +13,16 @@ class AgentNetwork(nn.Module):
             action_size (int): Total number of actions
             seed (int): Random seed
         """
-        super(ANetwork, self).__init__()
+        super(AgentNetwork, self).__init__()
         self.seed = torch.manual_seed(seed)
         "*** YOUR CODE HERE ***"
-        self.fc1 = nn.Linear(state_size, fc1_units)
-        self.fc2 = nn.Linear(fc1_units, fc2_units)
-        self.fc3 = nn.Linear(fc2_units, action_size)
+        self.fc1 = nn.Linear(state_size, h1_size)
+        self.fc2 = nn.Linear(h1_size, h2_size)
+        self.fc3 = nn.Linear(h2_size, action_size)
 
     def forward(self, state):
         """Build a network that maps state -> action probabilities."""
         x = F.relu(self.fc1(state))
         x = F.relu(self.fc2(x))
-        x = F.Softmax(self.fc3(x))
+        x = F.softmax(self.fc3(x))
         return x
